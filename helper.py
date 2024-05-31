@@ -178,17 +178,18 @@ def activity_heatmap(selected_user,df):
         
     else:
         new_df=df
+    new_df["day_name"]=new_df["date"].dt.day_name()
         
     period=[]
-    for hour in df[["day_name","hour"]]["hour"]:
+    for hour in new_df[["day_name","hour"]]["hour"]:
         if hour==23:
             period.append(str(hour) + "-" +str("00"))
         elif hour==0:
             period.append(str(hour) + "-" +str(hour+1))
         else:
             period.append(str(hour)+ "-"+ str(hour+1))
-    df["period"]=period
-    return df.pivot_table(index="day_name",columns="period",values="message",aggfunc="count").fillna(0)
+    new_df["period"]=period
+    return new_df.pivot_table(index="day_name",columns="period",values="message",aggfunc="count").fillna(0)
 
         
         
